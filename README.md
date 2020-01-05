@@ -1,4 +1,4 @@
-#electron print
+# electron print
 This is electron print example.
 
 This is modification of clone from electron-quick-start.

@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
 const path = require('path')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -51,3 +51,33 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('print-document', function(event){
+  const options = {
+    color: false,
+    margins: {
+      marginType: 'custom',
+      top: '2px',
+      left: '2px',
+      bottom: '0px',
+      right: '0px',
+    },
+    dpi: {
+      horizontal: '203dpi',
+      vertical: '203dpi'
+    }
+  }
+  let win = new BrowserWindow.fromWebContents(event.sender);
+  win.loadURL('file://'+__dirname+'/print.html');
+  win.webContents.print( options, (success, errorType) => {
+    if(!success) console.log(errorType);
+    else{
+      event.sender.send('print-success');
+    }
+  });
+  setTimeout(function(){
+    win.close();
+  }, 1000);
+
+});
+
