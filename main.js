@@ -68,7 +68,7 @@ ipcMain.on('print-document', function(event){
       vertical: '203dpi'
     }
   }
-  let win = new BrowserWindow.fromWebContents(event.sender);
+  let win = new BrowserWindow();
   win.loadURL('file://'+__dirname+'/print.html');
   win.webContents.print( options, (success, errorType) => {
     if(!success) console.log(errorType);
